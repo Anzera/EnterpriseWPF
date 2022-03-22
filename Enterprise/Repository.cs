@@ -41,7 +41,7 @@ namespace Enterprise
             }
         }
 
-        public void DeleteStudent(int id)
+        public void DeleteEmployee(int id)
         {
             using (var context = new ApplicationDbContext())
             {

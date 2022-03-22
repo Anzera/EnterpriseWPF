@@ -62,7 +62,7 @@
                                     Header="Imię"/>
                 <DataGridTextColumn Binding="{Binding LastName}"
                                     Header="Nazwisko"/>
-                <DataGridTextColumn Binding="{Binding Position}"
+                <DataGridTextColumn Binding="{Binding Position.PositionName}"
                                     Header="Stanowisko"/>
                 <DataGridTextColumn Binding="{Binding Salary}"
                                     Header="Pensja"/>

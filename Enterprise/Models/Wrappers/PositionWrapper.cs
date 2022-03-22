@@ -10,6 +10,5 @@ namespace Enterprise.Models.Wrappers
     {
         public int Id { get; set; }
         public string PositionName { get; set; }
-        public int EmployeeId { get; set; }
     }
 }

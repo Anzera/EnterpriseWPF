@@ -109,14 +109,14 @@ namespace Enterprise.ViewModels
             if (dialog != MessageDialogResult.Affirmative)
                 return;
 
-            _repository.DeleteStudent(SelectedEmployee.Id);
+            _repository.DeleteEmployee(SelectedEmployee.Id);
 
             RefreshEmployeesList();
         }
 
         private bool CanEditReleaseEmployee(object obj)
         {
-            return SelectedEmployee != null;
+            return SelectedEmployee != null && SelectedEmployee.Released != true;
         }
 
         private void AddEditEmployee(object obj)
