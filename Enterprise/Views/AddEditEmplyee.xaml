@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -60,36 +61,42 @@
                  Grid.Row="1"
                  Grid.Column="1"
                  Margin="5"/>
-        <Label Content="Data zatrudnienia"
-               Grid.Row="3"
-               Margin="5"/>
-        <TextBox Text="{Binding Employee.EmploymentDate, 
+        <Label Content="Stanowisko:"
+               Margin="5"
+               Grid.Row="3"/>
+        <TextBox Text="{Binding Employee.Position, 
             UpdateSourceTrigger=PropertyChanged,
             ValidatesOnDataErrors=True}"
                  Grid.Row="3"
                  Grid.Column="1"
                  Margin="5"/>
-        <Label Content="Zwolniony"
+        <Label Content="Data zatrudnienia"
                Grid.Row="4"
                Margin="5"/>
+        <TextBox Text="{Binding Employee.EmploymentDate, 
+            UpdateSourceTrigger=PropertyChanged,
+            ValidatesOnDataErrors=True}"
+                 Grid.Row="4"
+                 Grid.Column="1"
+                 Margin="5"/>
         <CheckBox IsChecked="{Binding Employee.Released}"
-                  Grid.Row="4"
+                  Grid.Row="5"
                   Grid.Column="1"
                   Content="Zwolniony"
                   Margin="5"/>
         <Label Content="Uwagi:"
-               Margin="5"
-               Grid.Row="5"/>
+               Margin="6"
+               Grid.Row="6"/>
         <TextBox 
             Text="{Binding Employee.Comments}" 
             TextWrapping="Wrap"
             AcceptsReturn="True"
-            Grid.Row="5" 
+            Grid.Row="6" 
             Grid.Column="1" 
             Margin="5"
             />
         <StackPanel Orientation="Horizontal"
-                    Grid.Row="6"
+                    Grid.Row="7"
                     Grid.ColumnSpan="2"
                     HorizontalAlignment="Right">
             <Button Command="{Binding CloseCommand}"
