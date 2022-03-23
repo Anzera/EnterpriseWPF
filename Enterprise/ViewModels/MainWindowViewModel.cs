@@ -24,8 +24,9 @@ namespace Enterprise.ViewModels
             EditEmployeeCommand = new RelayCommand(AddEditEmployee, CanEditEmployee);
             ReleaseEmployeeCommand = new AsyncRelayCommand(ReleaseEmployee, CanReleaseEmployee);
             RefrershEmployeeCommand = new RelayCommand(RefrershEmployees);
-            InitPositions();
-            RefreshEmployeesList();
+            SettingsCommand = new RelayCommand(NewSettings);
+            LoadedWindowCommand = new RelayCommand(LoadedWindow);//event odpalający się wraz z programem
+            
         }
 
         
@@ -33,6 +34,8 @@ namespace Enterprise.ViewModels
         public ICommand EditEmployeeCommand { get; set; }
         public ICommand ReleaseEmployeeCommand { get; set; }
         public ICommand RefrershEmployeeCommand { get; set; }
+        public ICommand SettingsCommand { get; set; }
+        public ICommand LoadedWindowCommand { get; set; }
 
 
         private EmployeeWrapper _selectedEmployee;
@@ -64,8 +67,8 @@ namespace Enterprise.ViewModels
         public int SelectedPositionId
         {
             get { return _selectedPositionId; }
-            set 
-            { 
+            set
+            {
                 _selectedPositionId = value;
                 OnPropertyChanged();
             }
@@ -93,7 +96,38 @@ namespace Enterprise.ViewModels
             Employees = new ObservableCollection<EmployeeWrapper>(
                 _repository.GetEmployees(SelectedPositionId));
         }
+        private void NewSettings(object obj)
+        {
+            var userSettingsWindow = new UserSettingsView(false);//parametr false "zamyka" okno ustawień jeśli użytkownik wciśnie przycisk "Anuluj"
+            userSettingsWindow.ShowDialog();
+        }
+        private async void LoadedWindow(object obj)
+        {
+            var loginWindow = new LoginView();
+            loginWindow.ShowDialog();
 
+            if (!IsConnectionCorrect())//sprawdzanie czy połączenie z bazą danych jest poprawne
+            {//jeśli nie
+                var metroWindow = Application.Current.MainWindow as MetroWindow;//pokazanie na ekranie wiadomości o błedzie z połączeniem
+                var dialog = await metroWindow.ShowMessageAsync(
+                "Błąd połączenia z bazą danych!",
+                "Nie udało połączyć się z bazą danych. Czy chcesz sprawdzić swoje ustawienia?",
+                MessageDialogStyle.AffirmativeAndNegative);
+
+                if (dialog != MessageDialogResult.Affirmative)//jęli użytkownik nie chce poprawiać danych
+                    Application.Current.Shutdown();// aplikacja zamyka się
+                else//jeśli użytkownik chce poprawić dane do połączenia z bazą 
+                {
+                    var userSettingsWindow = new UserSettingsView(true);//parametr true "zamyka" aplikację w momencie kiedy użytkownik wciścnie przycisk "Anuluj"
+                    userSettingsWindow.ShowDialog();//to otwiera się okno ustawień
+                }
+            }
+            else
+            {
+                InitPositions();
+                RefreshEmployeesList();
+            }
+        }
         private async Task ReleaseEmployee(object arg)
         {
             var metroWindow = Application.Current.MainWindow as MetroWindow;
@@ -143,7 +177,21 @@ namespace Enterprise.ViewModels
 
             SelectedPositionId = 0;
         }
-
-
+        private bool IsConnectionCorrect()
+        {
+            try
+            {
+                using (var context = new ApplicationDbContext())
+                {
+                    context.Database.Connection.Open();
+                    context.Database.Connection.Close();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
     }
 }

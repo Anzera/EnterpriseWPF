@@ -76,7 +76,32 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Components\BinadablePasswordBox.xaml.cs">
+      <DependentUpon>BinadablePasswordBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202203231236269_fixSalaryType.cs" />
+    <Compile Include="Migrations\202203231236269_fixSalaryType.Designer.cs">
+      <DependentUpon>202203231236269_fixSalaryType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoginSettings.cs" />
+    <Compile Include="Models\UserSettings.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\UserSettingsViewModel.cs" />
+    <Compile Include="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserSettingsView.xaml.cs">
+      <DependentUpon>UserSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Components\BinadablePasswordBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\AddEditEmplyee.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,6 +139,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\UserSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -131,6 +160,9 @@
     </Compile>
     <EmbeddedResource Include="Migrations\202203221105515_releasedPropertyOptional.resx">
       <DependentUpon>202203221105515_releasedPropertyOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202203231236269_fixSalaryType.resx">
+      <DependentUpon>202203231236269_fixSalaryType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

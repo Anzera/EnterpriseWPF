@@ -70,12 +70,20 @@ namespace Enterprise
             using (var context = new ApplicationDbContext())
             {
                 var emploeeToUpdate = context.Employees.Find(employee.Id);
+
                 emploeeToUpdate.FirstName = employee.FirstName;
                 emploeeToUpdate.LastName = employee.LastName;
                 emploeeToUpdate.Comments = employee.Comments;
                 emploeeToUpdate.Salary = employee.Salary;
-                emploeeToUpdate.Position = employee.Position;
+                emploeeToUpdate.PositionId = employee.PositionId;
                 emploeeToUpdate.EmploymentDate = employee.EmploymentDate;
+                emploeeToUpdate.ReleaseDate = employee.ReleaseDate;
+
+                if (emploeeToUpdate.ReleaseDate != null)
+                    emploeeToUpdate.Released = true;
+                else
+                    emploeeToUpdate.Released = false;
+
                 context.SaveChanges();
             }
         }

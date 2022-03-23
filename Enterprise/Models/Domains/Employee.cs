@@ -11,7 +11,7 @@ namespace Enterprise.Models.Domains
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string Salary { get; set; }
+        public decimal Salary { get; set; }
         public DateTime EmploymentDate { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string Comments { get; set; }

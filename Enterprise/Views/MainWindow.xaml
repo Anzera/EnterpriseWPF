@@ -4,10 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:Enterprise"
         mc:Ignorable="d"
         Title="Lista pracowników" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedWindowCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -35,7 +41,7 @@
                       ItemsSource="{Binding Positions}"
                       SelectedValue="{Binding SelectedPositionId}"
                       DisplayMemberPath="PositionName"
-                      SelectedValuePath="Id"/>    
+                      SelectedValuePath="Id"/>
             <Button Content="Odśwież"
                     Margin="5"
                     Height="25"
