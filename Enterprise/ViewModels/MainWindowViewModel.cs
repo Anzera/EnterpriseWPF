@@ -20,19 +20,15 @@ namespace Enterprise.ViewModels
         private Repository _repository = new Repository();
         public MainWindowViewModel()
         {
-            //using(var context = new ApplicationDbContext())
-            //{
-            //    var employees = context.Employees.ToList();
-            //}
             AddEmployeeCommand = new RelayCommand(AddEditEmployee);
-            EditEmployeeCommand = new RelayCommand(AddEditEmployee, CanEditReleaseEmployee);
-            ReleaseEmployeeCommand = new AsyncRelayCommand(ReleaseEmployee, CanEditReleaseEmployee);
+            EditEmployeeCommand = new RelayCommand(AddEditEmployee, CanEditEmployee);
+            ReleaseEmployeeCommand = new AsyncRelayCommand(ReleaseEmployee, CanReleaseEmployee);
             RefrershEmployeeCommand = new RelayCommand(RefrershEmployees);
             InitPositions();
             RefreshEmployeesList();
         }
 
-       
+        
         public ICommand AddEmployeeCommand { get; set; }
         public ICommand EditEmployeeCommand { get; set; }
         public ICommand ReleaseEmployeeCommand { get; set; }
@@ -109,21 +105,28 @@ namespace Enterprise.ViewModels
             if (dialog != MessageDialogResult.Affirmative)
                 return;
 
-            _repository.DeleteEmployee(SelectedEmployee.Id);
+            _repository.ReleaseEmployee(SelectedEmployee.Id);
 
             RefreshEmployeesList();
         }
 
-        private bool CanEditReleaseEmployee(object obj)
+        private bool CanReleaseEmployee(object obj)
         {
             return SelectedEmployee != null && SelectedEmployee.Released != true;
         }
 
+        private bool CanEditEmployee(object obj)
+        {
+            return SelectedEmployee != null;
+        }
+
+
         private void AddEditEmployee(object obj)
         {
-            var addeditEmployeeWindow = new AddEditEmplyee();
-            addeditEmployeeWindow.Closed += addeditEmployeeWindow_Closed;
-            addeditEmployeeWindow.ShowDialog();
+            //var addEditEmployeeWindow = new AddEditEmplyee(obj as EmployeeWrapper); z jakiegoś powodu nie działa
+            var addEditEmployeeWindow = new AddEditEmplyee(SelectedEmployee);
+            addEditEmployeeWindow.Closed += addeditEmployeeWindow_Closed;
+            addEditEmployeeWindow.ShowDialog();
         }
 
         private void addeditEmployeeWindow_Closed(object sender, EventArgs e)

@@ -44,5 +44,13 @@ namespace Enterprise.Models.Converters
                 PositionId = model.Position.Id
             };
         }
+        //public static EmployeePosition ToPositionDao(this EmployeeWrapper model)
+        //{
+        //    return new EmployeePosition()
+        //    {
+        //        Id = model.Id,
+        //        PositionName = model.Position.PositionName
+        //    };
+        //}
     }
 }

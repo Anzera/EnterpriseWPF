@@ -1,4 +1,5 @@
-﻿using Enterprise.ViewModels;
+﻿using Enterprise.Models.Wrappers;
+using Enterprise.ViewModels;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -21,10 +22,10 @@ namespace Enterprise.Views
     /// </summary>
     public partial class AddEditEmplyee : MetroWindow
     {
-        public AddEditEmplyee()
+        public AddEditEmplyee(EmployeeWrapper employee = null)
         {
             InitializeComponent();
-            DataContext = new AddEditEmployeeViewModel();
+            DataContext = new AddEditEmployeeViewModel(employee);
         }
     }
 }
