@@ -17,27 +17,29 @@ namespace Enterprise.ViewModels
     public class UserSettingsViewModel : BaseViewModel
     {
         private UserSettings _userSettings;
+        private LoginSettings _loginSettings;
         private bool _close;
 
         public UserSettingsViewModel(bool close)
         {
             CloseSettingsCommand = new RelayCommand(Close);
-            ConfirmSettingsCommand = new RelayCommand(Confirm);
+            ConfirmSettingsCommand = new RelayCommand(ConfirmBaseSettings);
+            ConfirmLoginCommand = new RelayCommand(CloseLoginSettings);
             _userSettings = new UserSettings();
+            _loginSettings = new LoginSettings();
             _close = close;
+            if (!close)
+            {
+                IsUpdate = true;
+            }
         }
+
 
         public ICommand CloseSettingsCommand { get; set; }
         public ICommand ConfirmSettingsCommand { get; set; }
+        public ICommand ConfirmLoginCommand { get; set; }
 
-        private void Confirm(object obj)
-        {
-            if (!UserSettings.IsValid)
-                return;
-
-            CloseWindow(obj as Window);
-            RestartAsync();
-        }
+        
 
         public UserSettings UserSettings
         {
@@ -51,6 +53,56 @@ namespace Enterprise.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public LoginSettings LoginSettings
+        {
+            get
+            {
+                return _loginSettings;
+            }
+            set
+            {
+                _loginSettings = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _password;
+
+        public string Password
+        {
+            get { return _password; }
+            set 
+            { 
+                _password = value;
+                OnPropertyChanged();            
+            }
+        }
+
+        private string _passwordBis;
+
+        public string PasswordBis
+        {
+            get { return _passwordBis; }
+            set
+            {
+                _passwordBis = value;
+                OnPropertyChanged();
+            }
+        }
+        
+
+        private bool _isUpdade;
+        public bool IsUpdate
+        {
+            get { return _isUpdade; }
+            set
+            {
+                _isUpdade = value;
+                OnPropertyChanged();
+            }
+        }
+
         private async Task RestartAsync()
         {
             var metroWindow = Application.Current.MainWindow as MetroWindow;
@@ -68,12 +120,43 @@ namespace Enterprise.ViewModels
             }
         }
 
+        private void ConfirmBaseSettings(object obj)
+        {
+            if (!UserSettings.IsValid)
+                return;
+
+            CloseWindow(obj as Window);
+            RestartAsync();
+        }
+
         private void Close(object obj)
         {
             if (_close)
                 Application.Current.Shutdown();
             CloseWindow(obj as Window);
 
+        }
+
+
+        private void CloseLoginSettings(object obj)
+        {
+            if (!LoginSettings.IsValid)
+                return;
+            if (Password != PasswordBis)
+            {
+                MessageBox.Show("Hasła nie są identyczne");
+                return;
+            }
+
+            PasswordChange();
+            CloseWindow(obj as Window);
+
+        }
+
+        private void PasswordChange()
+        {
+            LoginSettings.LoginPassword = Password;
+            LoginSettings.Save();
         }
 
         private void CloseWindow(Window window)

@@ -20,12 +20,15 @@ namespace Enterprise.ViewModels
         {
             LoginCommand = new RelayCommand(Login);
             CloseCommand = new RelayCommand(Close);
+            CloseWindowCommand = new RelayCommand(Close);
+            _loginSettings = new LoginSettings();
         }
 
         
 
         public ICommand LoginCommand { get; set; }
         public ICommand CloseCommand { get; set; }
+        public ICommand CloseWindowCommand { get; set; }
 
         private LoginSettings _loginSettings;
 
@@ -62,18 +65,22 @@ namespace Enterprise.ViewModels
         }
         private void Close(object obj)
         {
-            Application.Current.Shutdown();
+            if (string.IsNullOrWhiteSpace(User) || string.IsNullOrWhiteSpace(Password))
+                Application.Current.Shutdown();
+            else if (Password != LoginSettings.LoginPassword && User != LoginSettings.LoginUser)
+                Application.Current.Shutdown();
+            else
+                CloseWindow(obj as Window);
         }
-
         private void Login(object obj)
         {
-            if (Password == Settings.Default.LoginPassword && User == Settings.Default.LoginUser)
-            {
-                CloseWindow(obj as Window);
+            if (Password == LoginSettings.LoginPassword && User == LoginSettings.LoginUser) 
+            { 
+                CloseWindow(obj as Window); 
             }
             else
-            {
-                MessageBox.Show("Nieporawne dane");
+            { 
+                MessageBox.Show("Nieporawne dane"); 
             }
         }
         private void CloseWindow(Window window)
