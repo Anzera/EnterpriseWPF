@@ -1,3 +1,3 @@
 # EnterpriseWPF
 Login Admin
-Hadło admin
+Hasło admin
